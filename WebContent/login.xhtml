@@ -10,14 +10,11 @@
 			<h:title>Projeto de Exemplo com Richfaces 4</h:title>
 		</h:head>
 		<h:body>
-			<p>Bem vindo <h:outputText value="#{autenticador.login}"/>!</p>
 			<rich:panel style="width:200px;">
 				<h:form>
-					<h:outputText value="Data de Nascimento"/>				
-	           		<f:facet name="Calendario">
-	        	       <h:outputText value="Calendário" />
-	    	       </f:facet>
-		           <rich:calendar/>
+					<h:outputText value="Login"/><h:inputText value="#{autenticador.login}"/><br />
+					<h:outputText value="Senha"/><h:inputText value="#{autenticador.senha}"/><br />				
+	           		<h:commandButton value="Acessar" action="#{autenticador.logar}"/>
 	    		</h:form>
 	       </rich:panel>
 		</h:body>	
