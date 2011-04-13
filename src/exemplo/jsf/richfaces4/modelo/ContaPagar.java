@@ -1,5 +1,6 @@
 package exemplo.jsf.richfaces4.modelo;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
@@ -10,7 +11,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class ContaPagar {
+public class ContaPagar implements Serializable {
+
+	private static final long serialVersionUID = -237288118976052588L;
 
 	@Id @GeneratedValue
 	private Long id;
@@ -73,6 +76,13 @@ public class ContaPagar {
 
 	public void setPago(boolean pago) {
 		this.pago = pago;
+	}
+
+	@Override
+	public String toString() {
+		return "ContaPagar [id=" + id + ", descricao=" + descricao + ", valor="
+				+ valor + ", data=" + data + ", fornecedor=" + fornecedor
+				+ ", pago=" + pago + "]";
 	}
 	
 }

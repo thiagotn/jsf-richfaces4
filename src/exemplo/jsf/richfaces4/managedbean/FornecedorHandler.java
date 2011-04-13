@@ -3,8 +3,7 @@ package exemplo.jsf.richfaces4.managedbean;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.UIParameter;
-import javax.faces.event.ActionEvent;
+import javax.faces.context.FacesContext;
 
 import exemplo.jsf.richfaces4.modelo.Fornecedor;
 
@@ -25,7 +24,6 @@ public class FornecedorHandler {
 	}
 
 	public List<Fornecedor> getFornecedores() {
-		System.out.println("Lendo fornecedores #" + fornecedores.size());
 		return fornecedores;
 	}
 
@@ -50,16 +48,26 @@ public class FornecedorHandler {
 		this.fornecedor = new Fornecedor();
 	}
 	
-	public void escolheFornecedor(ActionEvent event) {
+	public String escolheFornecedor() {
 		System.out.println("Escolhendo fornecedor para visualizacao");
-		UIParameter val = (UIParameter) event.getComponent().findComponent("editId");
-		Long id = Long.valueOf(val.getValue().toString());
-		for (Fornecedor f : this.fornecedores) {
-			if (f.getId().equals(id)) {
-				System.out.println("Achei " + f);
-				this.fornecedor = f;
+		FacesContext fc = FacesContext.getCurrentInstance();
+		Fornecedor f = (Fornecedor) fc.getExternalContext().getRequestMap().get("f");
+		Long id = f.getId();
+		for (Fornecedor fo : this.fornecedores) {
+			if (fo.getId().equals(id)) {
+				System.out.println("Achei " + fo);
+				this.fornecedor = fo;
 				break;
 			}
 		}
+		return null;
+	}
+	
+	public String removeFornecedor() {
+		System.out.println("Escolhendo fornecedor para remover");
+		FacesContext fc = FacesContext.getCurrentInstance();
+		Fornecedor f = (Fornecedor) fc.getExternalContext().getRequestMap().get("f");
+		this.fornecedores.remove(f);
+		return null;
 	}
 }

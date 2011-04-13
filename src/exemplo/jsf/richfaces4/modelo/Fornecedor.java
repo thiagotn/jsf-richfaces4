@@ -1,5 +1,6 @@
 package exemplo.jsf.richfaces4.modelo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,7 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Fornecedor {
+public class Fornecedor implements Serializable {
+
+	private static final long serialVersionUID = -3716940834084252903L;
 
 	@Id @GeneratedValue
 	private Long id;
@@ -51,5 +54,11 @@ public class Fornecedor {
 	public void setContatos(List<Funcionario> contatos) {
 		this.contatos = contatos;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Fornecedor [id=" + id + ", nome=" + nome + ", descricao="
+				+ descricao + "]";
+	}
+
 }

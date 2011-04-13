@@ -6,20 +6,79 @@
 	xmlns:rich="http://richfaces.org/rich" 
 	xmlns:a4j="http://richfaces.org/a4j"> 
 	<f:view contentType="text/html">
+	<f:loadBundle basename="message" var="msg"/>
 		<h:head>
 			<h:title>Projeto de Exemplo com Richfaces 4</h:title>
 		</h:head>
 		<h:body>
-			<p>Bem vindo <h:outputText value="#{autenticador.login}"/>!</p>
-			<rich:panel style="width:200px;">
-				<h:form>
-					<h:outputText value="Data de Nascimento"/>				
-	           		<f:facet name="Calendario">
-	        	       <h:outputText value="Calendário" />
-	    	       </f:facet>
-		           <rich:calendar/>
-	    		</h:form>
-	       </rich:panel>
+			<p> 
+				<h:outputText value="#{msg['bemvindo']}"/>
+				<h:outputText value="#{autenticador.login}"/>!
+				<h:outputText value="#{FornecedorHandler.fornecedor.nome}"/>
+			</p>
+			<h:form>
+				<rich:tabPanel switchType="client">
+					<rich:tab label="Fornecedores" name="Fornecedores" >
+			    			<h:outputText value="#{msg['nome']}"/> <h:inputText id="nome" required="true" value="#{FornecedorHandler.fornecedor.nome}" >
+			    				<f:validateLength minimum="5"/>
+			    			</h:inputText>
+			    			<h:message for="nome"/>
+			    			<h:panelGrid/>
+			    			<h:outputText value="#{msg['descricao']}" style="vertical-align: top"/> <h:inputTextarea id="descricao" required="true" value="#{FornecedorHandler.fornecedor.descricao}" /><h:message for="descricao"/><br />
+			    			<h:panelGrid/>
+			    			<h:commandButton value="cadastrar" action="#{FornecedorHandler.salva}" />            
+			             	<h:panelGrid/>	
+			             	<rich:dataTable style="width:400px;" id="fornecedores" 
+			             		rendered="#{not empty FornecedorHandler.fornecedores}"
+			             		value="#{FornecedorHandler.fornecedores}" 
+			             		border="1" var="f" rows="5" >
+			             		<rich:column>
+			             			<f:facet name="header">
+			             				<h:outputText value="id"/>
+			             			</f:facet>
+			             			<h:outputText value="#{f.id}"/>
+			             		</rich:column>
+			             		<rich:column>
+			             			<f:facet name="header">
+			             				<h:outputText value="nome"/>
+			             			</f:facet>
+			             			<h:outputText value="#{f.nome}"/>
+			             		</rich:column>
+			             		<rich:column>
+			             			<f:facet name="header">
+			             				<h:outputText value="descricao"/>
+			             			</f:facet>
+			             			<h:outputText value="#{f.descricao}"/>
+			             		</rich:column>
+			             		<rich:column>
+			             			<f:facet name="header">
+			             				<h:outputText value="alterar"/>
+			             			</f:facet>
+			             			<a4j:commandLink id="alterar" immediate="true" action="#{FornecedorHandler.escolheFornecedor}" value="Alterar"/>
+			             		</rich:column>
+			             		<rich:column>
+			             			<f:facet name="header">
+			             				<h:outputText value="remover"/>
+			             			</f:facet>
+			             			<a4j:commandLink id="remover" immediate="true" action="#{FornecedorHandler.removeFornecedor}" value="Remover"/>
+			             		</rich:column>
+			             	</rich:dataTable>
+			             	<rich:dataScroller style="width:400px;"
+			             		rendered="#{not empty FornecedorHandler.fornecedores}"  
+			             		for="fornecedores" maxPages="5">
+							   <f:facet name="first">
+			      				<h:outputText value="First" />
+							   </f:facet>
+							   <f:facet name="last">
+							      <h:outputText value="Last" />
+							   </f:facet>
+							</rich:dataScroller>
+					</rich:tab>
+					<rich:tab name="Conta Pagar">
+
+					</rich:tab>
+				</rich:tabPanel>
+			</h:form>
 		</h:body>	
 	</f:view>
 </ui:composition>
