@@ -8,18 +8,29 @@ import org.hibernate.cfg.AnnotationConfiguration;
 public class HibernateUtil {
 
 	private static Logger logger = Logger.getLogger(HibernateUtil.class); 
-	private static SessionFactory factory;
+	
+	private static final SessionFactory sessionFactory;
+	private static ThreadLocal<Session> sessions = new ThreadLocal<Session>();
 	
 	static {
-		AnnotationConfiguration cfg = new AnnotationConfiguration();
-		cfg.configure();
-		
-		factory = cfg.buildSessionFactory();
+		sessionFactory = new AnnotationConfiguration()
+			.configure().buildSessionFactory();
 	}
 	
 	public static Session openSession() {
-		logger.info("abrindo nova sessão");
-		return factory.openSession();
+		if(sessions.get() != null){
+			logger.error("ja existe uma session para esta thread");
+		}
+		sessions.set(sessionFactory.openSession());
+		return sessions.get();
 	}
 	
+	public static void closeCurrentSession() {
+		sessions.get().close();
+		sessions.set(null);
+	}
+	
+	public static Session currentSession() {
+		return 	sessions.get();
+	}
 }

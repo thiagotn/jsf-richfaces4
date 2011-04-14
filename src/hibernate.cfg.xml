@@ -16,9 +16,9 @@
 		<property name="format_sql">true</property>
 		<property name="hbm2ddl.auto">update</property>
 
-		<mapping class="example.hibernate.modelo.Funcionario" />
-		<mapping class="example.hibernate.modelo.Fornecedor" />
-		<mapping class="example.hibernate.modelo.ContaPagar" />
+		<mapping class="exemplo.jsf.richfaces4.modelo.Funcionario" />
+		<mapping class="exemplo.jsf.richfaces4.modelo.Fornecedor" />
+		<mapping class="exemplo.jsf.richfaces4.modelo.ContaPagar" />
 
 	</session-factory>
 </hibernate-configuration>

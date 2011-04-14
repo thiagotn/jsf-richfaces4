@@ -17,27 +17,24 @@
 				<h:outputText value="#{FornecedorHandler.fornecedor.nome}"/>
 				<h:messages />
 			</p>
-			<h:form id="geral">
-				<rich:tabPanel switchType="server">
-					<rich:tab label="Fornecedores" name="Fornecedores" >
 			    		<h:form id="cadastro">	
-			    			<a4j:outputPanel id="formCadastro">
-				    			<h:panelGrid>
-					    			<h:outputText value="#{msg['nome']}"/>
-					    			<h:inputText id="nome" required="true" value="#{FornecedorHandler.fornecedor.nome}" >
-					    				<f:validateLength minimum="5"/>
-					    			</h:inputText>
-					    			<h:message for="nome"/>
-					    		</h:panelGrid>	
-				    			<h:panelGrid>
-					    			<h:outputText value="#{msg['descricao']}" style="vertical-align: top"/>
-					    			<h:inputTextarea style="width:400px;" rows="10" id="descricao" required="true" value="#{FornecedorHandler.fornecedor.descricao}" />
-					    			<h:message for="descricao"/>
-					    		</h:panelGrid>	
-				    			<h:panelGrid>
-			    					<a4j:commandButton reRender="fornecedores" value="cadastrar" action="#{FornecedorHandler.salva}" />
-				    			</h:panelGrid>
-			    			</a4j:outputPanel>
+			    			<h:panelGrid>
+				    			<h:outputText value="#{msg['nome']}"/>
+				    			<h:inputText id="nome" required="true" value="#{FornecedorHandler.fornecedor.nome}" >
+				    				<f:validateLength minimum="5"/>
+				    			</h:inputText>
+				    			<h:message for="nome"/>
+				    		</h:panelGrid>	
+			    			<h:panelGrid>
+				    			<h:outputText value="#{msg['descricao']}" style="vertical-align: top"/>
+				    			<h:inputTextarea style="width:400px;" rows="10" id="descricao" required="true" value="#{FornecedorHandler.fornecedor.descricao}" />
+				    			<h:message for="descricao"/>
+				    		</h:panelGrid>	
+			    			<h:panelGrid>
+		    					<h:commandButton value="cadastrar" action="#{FornecedorHandler.salva}" />
+			    			</h:panelGrid>
+			    		</h:form>
+			    		<h:form id="tabela">
 			             	<h:panelGrid/>
 			             	<rich:dataTable style="width:400px;" id="fornecedores" 
 			             		rendered="#{not empty FornecedorHandler.fornecedores}"
@@ -65,13 +62,17 @@
 			             			<f:facet name="header">
 			             				<h:outputText value="alterar"/>
 			             			</f:facet>
-		             				<a4j:commandButton id="alterar" reRender="cadastro" action="#{FornecedorHandler.escolheFornecedor}" value="Alterar"/>
+		             				<h:commandLink id="alterar" actionListener="#{FornecedorHandler.escolheFornecedor}" value="Alterar">
+		             					<f:param id="editId" name="id" value="#{f.id}"/>
+		             				</h:commandLink>
 			             		</rich:column>
 			             		<rich:column>
 			             			<f:facet name="header">
 			             				<h:outputText value="remover"/>
 			             			</f:facet>
-		             				<h:commandLink id="remover" immediate="true" action="#{FornecedorHandler.removeFornecedor}" value="Remover"/>
+		             				<h:commandLink id="remover" actionListener="#{FornecedorHandler.removeFornecedor}" value="Remover">
+		             					<f:param id="removeId" name="id" value="#{f.id}"/>
+		             				</h:commandLink>
 			             		</rich:column>
 			             	</rich:dataTable>
 			             	<rich:dataScroller style="width:400px;"
@@ -85,12 +86,34 @@
 							   </f:facet>
 							</rich:dataScroller>
 						</h:form>	
-					</rich:tab>
-					<rich:tab name="Conta Pagar">
 
-					</rich:tab>
-				</rich:tabPanel>
-			</h:form>
+						<h:form>
+							<h:panelGrid columns="2">
+								<h:outputText value="fornecedor"/>
+								<h:selectOneMenu binding="#{ContaPagarHandler.fornecedorSelecionado}">
+									<f:selectItems value="#{ContaPagarHandler.fornecedoresParaComboBox}"/>
+								</h:selectOneMenu>
+
+								<h:outputText value="descricao"/>
+								<h:inputText value="#{ContaPagarHandler.contaPagar.descricao}"/>
+
+								<h:outputText value="data pagamento"/>
+								<rich:calendar value="#{ContaPagarHandler.contaPagar.data.time}"/>
+
+								<h:outputText value="valor"/>
+								<h:inputText value="#{ContaPagarHandler.contaPagar.valor}"/>
+								
+								<h:outputText value="pago"/>
+								<h:selectBooleanCheckbox value="#{ContaPagarHandler.contaPagar.pago}"/>
+								
+								<h:commandButton actionListener="#{ContaPagarHandler.salva}" value="salvar"/>
+							
+								<rich:list var="conta" value="#{ContaPagarHandler.contas}">
+									<h:outputText value="#{conta.descricao}"/>
+								</rich:list>
+								
+							</h:panelGrid>
+						</h:form>
 		</h:body>	
 	</f:view>
 </ui:composition>

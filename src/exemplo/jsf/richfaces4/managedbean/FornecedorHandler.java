@@ -1,22 +1,19 @@
 package exemplo.jsf.richfaces4.managedbean;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.context.FacesContext;
+import javax.faces.component.UIParameter;
+import javax.faces.event.ActionEvent;
 
+import org.hibernate.Session;
+
+import exemplo.jsf.richfaces4.dao.Dao;
 import exemplo.jsf.richfaces4.modelo.Fornecedor;
+import exemplo.jsf.richfaces4.util.HibernateUtil;
 
-public class FornecedorHandler implements Serializable {
-
-	private static final long serialVersionUID = 2660872390886543397L;
+public class FornecedorHandler {
 
 	private Fornecedor fornecedor = new Fornecedor();
-
-	private List<Fornecedor> fornecedores = new ArrayList<Fornecedor>();
-	
-	private long count = 0;
 	
 	public Fornecedor getFornecedor() {
 		return fornecedor;
@@ -27,49 +24,37 @@ public class FornecedorHandler implements Serializable {
 	}
 
 	public List<Fornecedor> getFornecedores() {
-		return fornecedores;
+		Session session = HibernateUtil.currentSession();
+		Dao<Fornecedor> dao = new Dao<Fornecedor>(session, Fornecedor.class);
+		return dao.list();
 	}
 
-	public void setFornecedores(List<Fornecedor> fornecedores) {
-		this.fornecedores = fornecedores;
-	}
-
-	public long getCount() {
-		return count;
-	}
-
-	public void setCount(long count) {
-		this.count = count;
-	}
-	
 	public void salva() {
-		System.out.println("Adicionando: " + fornecedor.getNome());
-		if (fornecedor.getId() == null) {
-			this.fornecedor.setId(++count);
-			this.fornecedores.add(fornecedor);
-		}
-		this.fornecedor = new Fornecedor();
+		Session session = HibernateUtil.currentSession();
+		Dao<Fornecedor> dao = new Dao<Fornecedor>(session, Fornecedor.class);
+		dao.saveOrUpdate(fornecedor);
+		fornecedor = new Fornecedor();
 	}
 	
-	public String escolheFornecedor() {
+	public void escolheFornecedor(ActionEvent event) {
 		System.out.println("Escolhendo fornecedor para visualizacao");
-		FacesContext fc = FacesContext.getCurrentInstance();
-		Fornecedor f = (Fornecedor) fc.getExternalContext().getRequestMap().get("f");
-		Long id = f.getId();
-		for (Fornecedor fo : this.fornecedores) {
-			if (fo.getId().equals(id)) {
-				System.out.println("Achei " + fo);
-				this.fornecedor = fo;
-			}
-		}
-		return null;
+		UIParameter val = (UIParameter) event.getComponent().findComponent("editId");
+		Long id = Long.valueOf(val.getValue().toString());
+		
+		Session session = HibernateUtil.currentSession();
+		Dao<Fornecedor> dao = new Dao<Fornecedor>(session, Fornecedor.class);
+		this.fornecedor = dao.load(id);
 	}
 	
-	public String removeFornecedor() {
+	public void removeFornecedor(ActionEvent event) {
 		System.out.println("Escolhendo fornecedor para remover");
-		FacesContext fc = FacesContext.getCurrentInstance();
-		Fornecedor f = (Fornecedor) fc.getExternalContext().getRequestMap().get("f");
-		this.fornecedores.remove(f);
-		return null;
+		UIParameter val = (UIParameter) event.getComponent().findComponent("removeId");
+		Long id = Long.valueOf(val.getValue().toString());
+		
+		Session session = HibernateUtil.currentSession();
+		Dao<Fornecedor> dao = new Dao<Fornecedor>(session, Fornecedor.class);
+		this.fornecedor = dao.load(id);
+		dao.delete(fornecedor);
+		this.fornecedor = new Fornecedor();
 	}
 }
