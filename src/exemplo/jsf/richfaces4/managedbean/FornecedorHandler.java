@@ -1,5 +1,6 @@
 package exemplo.jsf.richfaces4.managedbean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,9 @@ import javax.faces.context.FacesContext;
 
 import exemplo.jsf.richfaces4.modelo.Fornecedor;
 
-public class FornecedorHandler {
+public class FornecedorHandler implements Serializable {
+
+	private static final long serialVersionUID = 2660872390886543397L;
 
 	private Fornecedor fornecedor = new Fornecedor();
 
@@ -57,7 +60,6 @@ public class FornecedorHandler {
 			if (fo.getId().equals(id)) {
 				System.out.println("Achei " + fo);
 				this.fornecedor = fo;
-				break;
 			}
 		}
 		return null;

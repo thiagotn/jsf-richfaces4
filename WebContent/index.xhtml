@@ -15,19 +15,30 @@
 				<h:outputText value="#{msg['bemvindo']}"/>
 				<h:outputText value="#{autenticador.login}"/>!
 				<h:outputText value="#{FornecedorHandler.fornecedor.nome}"/>
+				<h:messages />
 			</p>
-			<h:form>
-				<rich:tabPanel switchType="client">
+			<h:form id="geral">
+				<rich:tabPanel switchType="server">
 					<rich:tab label="Fornecedores" name="Fornecedores" >
-			    			<h:outputText value="#{msg['nome']}"/> <h:inputText id="nome" required="true" value="#{FornecedorHandler.fornecedor.nome}" >
-			    				<f:validateLength minimum="5"/>
-			    			</h:inputText>
-			    			<h:message for="nome"/>
-			    			<h:panelGrid/>
-			    			<h:outputText value="#{msg['descricao']}" style="vertical-align: top"/> <h:inputTextarea id="descricao" required="true" value="#{FornecedorHandler.fornecedor.descricao}" /><h:message for="descricao"/><br />
-			    			<h:panelGrid/>
-			    			<h:commandButton value="cadastrar" action="#{FornecedorHandler.salva}" />            
-			             	<h:panelGrid/>	
+			    		<h:form id="cadastro">	
+			    			<a4j:outputPanel id="formCadastro">
+				    			<h:panelGrid>
+					    			<h:outputText value="#{msg['nome']}"/>
+					    			<h:inputText id="nome" required="true" value="#{FornecedorHandler.fornecedor.nome}" >
+					    				<f:validateLength minimum="5"/>
+					    			</h:inputText>
+					    			<h:message for="nome"/>
+					    		</h:panelGrid>	
+				    			<h:panelGrid>
+					    			<h:outputText value="#{msg['descricao']}" style="vertical-align: top"/>
+					    			<h:inputTextarea style="width:400px;" rows="10" id="descricao" required="true" value="#{FornecedorHandler.fornecedor.descricao}" />
+					    			<h:message for="descricao"/>
+					    		</h:panelGrid>	
+				    			<h:panelGrid>
+			    					<a4j:commandButton reRender="fornecedores" value="cadastrar" action="#{FornecedorHandler.salva}" />
+				    			</h:panelGrid>
+			    			</a4j:outputPanel>
+			             	<h:panelGrid/>
 			             	<rich:dataTable style="width:400px;" id="fornecedores" 
 			             		rendered="#{not empty FornecedorHandler.fornecedores}"
 			             		value="#{FornecedorHandler.fornecedores}" 
@@ -54,13 +65,13 @@
 			             			<f:facet name="header">
 			             				<h:outputText value="alterar"/>
 			             			</f:facet>
-			             			<a4j:commandLink id="alterar" immediate="true" action="#{FornecedorHandler.escolheFornecedor}" value="Alterar"/>
+		             				<a4j:commandButton id="alterar" reRender="cadastro" action="#{FornecedorHandler.escolheFornecedor}" value="Alterar"/>
 			             		</rich:column>
 			             		<rich:column>
 			             			<f:facet name="header">
 			             				<h:outputText value="remover"/>
 			             			</f:facet>
-			             			<a4j:commandLink id="remover" immediate="true" action="#{FornecedorHandler.removeFornecedor}" value="Remover"/>
+		             				<h:commandLink id="remover" immediate="true" action="#{FornecedorHandler.removeFornecedor}" value="Remover"/>
 			             		</rich:column>
 			             	</rich:dataTable>
 			             	<rich:dataScroller style="width:400px;"
@@ -73,6 +84,7 @@
 							      <h:outputText value="Last" />
 							   </f:facet>
 							</rich:dataScroller>
+						</h:form>	
 					</rich:tab>
 					<rich:tab name="Conta Pagar">
 

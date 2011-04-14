@@ -1,6 +1,10 @@
 package exemplo.jsf.richfaces4.managedbean;
 
-public class LoginHandler {
+import java.io.Serializable;
+
+public class LoginHandler implements Serializable {
+
+	private static final long serialVersionUID = -8085460699907450479L;
 
 	private String login;
 	
