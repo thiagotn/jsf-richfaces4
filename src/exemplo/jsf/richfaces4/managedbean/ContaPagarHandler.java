@@ -8,14 +8,16 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
+import org.hibernate.Session;
+
+import exemplo.jsf.richfaces4.dao.Dao;
 import exemplo.jsf.richfaces4.modelo.ContaPagar;
 import exemplo.jsf.richfaces4.modelo.Fornecedor;
+import exemplo.jsf.richfaces4.util.HibernateUtil;
 
 public class ContaPagarHandler {
 
 	private ContaPagar contaPagar = new ContaPagar();
-	
-	private List<ContaPagar> contas = new ArrayList<ContaPagar>();
 	
 	private HtmlSelectOneMenu fornecedorSelecionado;
 	
@@ -37,13 +39,13 @@ public class ContaPagarHandler {
 	}
 
 	public void salva(ActionEvent event) {
-		System.out.println("gravando conta: " + contaPagar.getDescricao());
-		System.out.println("pago: " + contaPagar.isPago());
-		int id = Integer.parseInt(fornecedorSelecionado.getValue().toString());
-		Fornecedor f = pegaFornecedorHandler().getFornecedores().get(id -1);
+		Session session = HibernateUtil.currentSession();
+		Dao<Fornecedor> fornecedorDao = new Dao<Fornecedor>(session, Fornecedor.class);
+		Long id = Long.parseLong(fornecedorSelecionado.getValue().toString());
+		Fornecedor f = fornecedorDao.load(id);
 		contaPagar.setFornecedor(f);
-		System.out.println("fornecedor: " + contaPagar.getFornecedor().getNome());
-		this.contas.add(contaPagar);
+		Dao<ContaPagar> contaPagarDao = new Dao<ContaPagar>(session, ContaPagar.class);
+		contaPagarDao.saveOrUpdate(contaPagar);	
 		contaPagar = new ContaPagar();
 	}
 	
@@ -56,11 +58,9 @@ public class ContaPagarHandler {
 	}
 
 	public List<ContaPagar> getContas() {
-		return contas;
-	}
-
-	public void setContas(List<ContaPagar> contas) {
-		this.contas = contas;
+		Session session = HibernateUtil.currentSession();
+		Dao<ContaPagar> dao = new Dao<ContaPagar>(session, ContaPagar.class);
+		return dao.list();
 	}
 
 	public HtmlSelectOneMenu getFornecedorSelecionado() {

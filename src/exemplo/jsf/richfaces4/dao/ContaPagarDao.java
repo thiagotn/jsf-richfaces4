@@ -35,7 +35,6 @@ public class ContaPagarDao extends Dao<ContaPagar> {
 		Criteria c = getSession().createCriteria(ContaPagar.class);
 		ProjectionList pl = Projections.projectionList();
 		pl.add(Projections.groupProperty("fornecedor"));
-		pl.add(Projections.groupProperty("pago"));
 		pl.add(Projections.sum("valor"), "soma");
 		c.setProjection(pl);
 		c.addOrder(Order.asc("soma"));

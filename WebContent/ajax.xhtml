@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>  
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:rich="http://richfaces.org/rich" 
+	xmlns:a4j="http://richfaces.org/a4j"> 
+	<f:view contentType="text/html">
+	<f:loadBundle basename="message" var="msg"/>
+		<h:head>
+			<h:title>Projeto de Exemplo com Richfaces 4</h:title>
+		</h:head>
+		<h:body>
+			<p> 
+				<h:outputText value="#{msg['bemvindo']}"/>
+				<h:outputText value="#{autenticador.login}"/>!
+				<h:outputText value="#{FornecedorHandler.fornecedor.nome}"/>
+				<h:messages />
+			</p>
+    		<h:form>	
+				<rich:autocomplete mode="cachedAjax" 
+					tokens=", " minChars="1"
+            		autofill="false"
+            		autocompleteMethod="#{FornecedorHandler.suggest}" />
+			</h:form>
+		</h:body>	
+	</f:view>
+</ui:composition>
+
+
+
+
+
+
+
+
+
+

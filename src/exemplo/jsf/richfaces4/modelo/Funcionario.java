@@ -25,9 +25,6 @@ public class Funcionario implements Serializable {
 	
 	private String email;
 
-	@OneToMany(mappedBy="fornecedor")
-	private List<ContaPagar> contas;
-	
 	@ManyToMany(mappedBy="contatos")
 	private List<Fornecedor> fornecedores;
 	
@@ -71,14 +68,6 @@ public class Funcionario implements Serializable {
 		this.email = email;
 	}
 
-	public List<ContaPagar> getContas() {
-		return contas;
-	}
-
-	public void setContas(List<ContaPagar> contas) {
-		this.contas = contas;
-	}
-
 	public List<Fornecedor> getFornecedores() {
 		return fornecedores;
 	}
@@ -91,7 +80,7 @@ public class Funcionario implements Serializable {
 	public String toString() {
 		return "Funcionario [id=" + id + ", nome=" + nome + ", usuario="
 				+ usuario + ", senha=" + senha + ", email=" + email
-				+ ", contas=" + contas + ", fornecedores=" + fornecedores + "]";
+				+ ", fornecedores=" + fornecedores + "]";
 	}
 	
 }

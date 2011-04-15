@@ -2,6 +2,7 @@ package exemplo.jsf.richfaces4.modelo;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class ContaPagar implements Serializable {
 	private Double valor;
 
 	@Temporal(TemporalType.DATE)	
-	private Calendar data;
+	private Calendar data = new GregorianCalendar();
 	
 	@ManyToOne	
 	private Fornecedor fornecedor;

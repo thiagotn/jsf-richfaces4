@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Fornecedor implements Serializable {
@@ -22,6 +23,9 @@ public class Fornecedor implements Serializable {
 
 	@ManyToMany
 	private List<Funcionario> contatos;
+	
+	@OneToMany(mappedBy="fornecedor")
+	private List<ContaPagar> contas;
 	
 	public Long getId() {
 		return id;
@@ -53,6 +57,14 @@ public class Fornecedor implements Serializable {
 
 	public void setContatos(List<Funcionario> contatos) {
 		this.contatos = contatos;
+	}
+
+	public List<ContaPagar> getContas() {
+		return contas;
+	}
+
+	public void setContas(List<ContaPagar> contas) {
+		this.contas = contas;
 	}
 
 	@Override

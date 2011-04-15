@@ -8,6 +8,7 @@ import javax.faces.event.ActionEvent;
 import org.hibernate.Session;
 
 import exemplo.jsf.richfaces4.dao.Dao;
+import exemplo.jsf.richfaces4.dao.FornecedorDao;
 import exemplo.jsf.richfaces4.modelo.Fornecedor;
 import exemplo.jsf.richfaces4.util.HibernateUtil;
 
@@ -56,5 +57,11 @@ public class FornecedorHandler {
 		this.fornecedor = dao.load(id);
 		dao.delete(fornecedor);
 		this.fornecedor = new Fornecedor();
+	}
+	
+	public List<String> suggest(String busca) {
+		Session session = HibernateUtil.currentSession();
+		FornecedorDao dao = new FornecedorDao(session);
+		return dao.buscaPeloComecoDoNome(busca);
 	}
 }
